@@ -146,7 +146,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261212067}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &261212069
 Camera:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 71.01784
   orthographic: 0
@@ -244,7 +244,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 55.35759
   orthographic: 0
@@ -512,7 +512,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -579,12 +579,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc477c7ef72abf542a4674424dc90240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trajectoryType: MagnusProjectile
+  trajectoryType: Projectile
   addForceFlag: 1
   outsideFlag: 0
   bounceFlag: 0
-  trial: 1
-  debug: 0
+  trial: 2
+  debug: 1
 --- !u!54 &1983285320
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -52,8 +52,8 @@ public class ObjectMotion : MonoBehaviour
         // Get the rigidbody component to rb
         rb = GetComponent<Rigidbody>();
         // Random Initailize the position
-        Vector3 initialPosition = new Vector3(Random.Range(-20.0f, 20.0f), 0.727f, Random.Range(-10.0f, 10.0f));
-        rb.transform.position = initialPosition;
+        //Vector3 initialPosition = new Vector3(Random.Range(-20.0f, 20.0f), 0.727f, Random.Range(-10.0f, 10.0f));
+        //rb.transform.position = initialPosition;
         // Transform the eulerAngles of ball for make it curve
         rb.transform.eulerAngles = new Vector3(0.0f, 15.0f, 0.0f);
         // Initialize the dataset folder and save the camera parameters
@@ -117,17 +117,9 @@ public class ObjectMotion : MonoBehaviour
                                 Vector3 ball_screen_coordinate_along, Vector3 ball_ndc_coordinate_along,
                                 Vector3 ball_screen_coordinate_top, Vector3 ball_ndc_coordinate_top, int t)
     {
-        //using (var sw = new StreamWriter(getPath3D(), append:true))
-        //{
-        //    string traj_pos_3d = string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}", 
-        //        rb.position.x, rb.position.y, rb.position.z, rb.velocity.magnitude, addForceFlag, trajectoryType, t
-        //    );
-        //    sw.WriteLine(traj_pos_3d);
-        //}
-
         using (var sw = new StreamWriter(getPath(), append:true))
         {
-            string traj = string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19}, {20}, {21}, {22}, {23}, {24}, {25}",
+        string traj=string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25}",
                 rb.position.x, rb.position.y, rb.position.z, rb.velocity.magnitude, ball_screen_coordinate_main.x, ball_screen_coordinate_main.y, 
                 ball_screen_coordinate_main.z, ball_ndc_coordinate_main.x, ball_ndc_coordinate_main.y, ball_ndc_coordinate_main.z,
                 ball_screen_coordinate_along.x, ball_screen_coordinate_along.y, ball_screen_coordinate_along.z, ball_ndc_coordinate_along.x, 
@@ -146,6 +138,36 @@ public class ObjectMotion : MonoBehaviour
     private string getPath()
     {
         return string.Format("{0}/SimulatedTrajectory/Trial_{1}/{2}Trajectory.csv", Application.dataPath, trial, trajectoryType);
+    }
+
+    Vector3 ManualScreenPointToWorldPoint(Vector2 screenPoint, float distance, Matrix4x4 cameraToWorldMatrix, Matrix4x4 projectionMatrixInverse) {
+        // here we are converting screen point in screen space to camera space point placed on a plane "distance" away from the camera
+        // screen point is in range [(0,0) - (Screen.Width, Screen.Height)]
+        // Pipeline : 
+        // object space -> {MODEL} -> World Space -> {VIEW} -> Eye Space -> {PROJ} -> Clip Space -> {perspective divide} -> NDC -> {Viewport/DepthRange} -> Window Space
+        Vector2 pointViewportSpace = screenPoint / new Vector2(Screen.width, Screen.height); // convert space [(0,0) - (Screen.Width, Screen.Height)] to [(0,0) - (1,1)]
+        Vector2 pointCameraSpaceNormalized = (pointViewportSpace * 2.0f) - Vector2.one; // convert space [(0,0) - (1,1)] to [(-1,-1) - (1,1)]
+        Vector2 pointCameraSpace = pointCameraSpaceNormalized * distance; // convert space [(-1,-1) - (1,1)] to [(-dist,-dist) - (dist, dist)]
+        Vector4 planePoint = new Vector4(pointCameraSpace.x, pointCameraSpace.y, distance, distance); // define the point (don't know why z and w components need to be set to distance)
+        // calculate convertion matrix from camera space to world space
+        Matrix4x4 matrix = cameraToWorldMatrix * projectionMatrixInverse;
+        // multiply world point by VP matrix
+        Vector4 worldPoint = matrix * planePoint;
+        //worldPoint.y = 38.0f + worldPoint.y;
+        //worldPoint.z = worldPoint.z - 37.7f;
+        return worldPoint;
+    }
+
+    Vector4 manualScreenToWorldPoint(Camera cam, Vector3 sp){
+        Matrix4x4 mat = cam.cameraToWorldMatrix * cam.projectionMatrix.inverse;
+        //sp.x = ((sp.x * 2)/cam.pixelWidth - 1) * sp.z;
+        //sp.y = ((sp.y * 2)/cam.pixelHeight - 1) * sp.z;
+        Vector4 sp_homo = new Vector4(sp.x, sp.y, sp.z, sp.z);
+        sp_homo = mat * sp_homo;
+        //sp_homo.x = sp_homo.x / sp_homo.w;
+        //sp_homo.y = sp_homo.y / sp_homo.w;
+        //sp_homo.z = sp_homo.z / sp_homo.w;
+        return sp_homo;
     }
 
     Vector3 manualWorldToScreenPoint(Vector3 wp, Matrix4x4 projectionMatrix, Matrix4x4 worldToCameraMatrix, Camera cam) {
@@ -167,7 +189,10 @@ public class ObjectMotion : MonoBehaviour
             // convert x and y from clip space to window coordinates
             temp.x = (temp.x/temp.w + 1f)*.5f * cam.pixelWidth;
             temp.y = (temp.y/temp.w + 1f)*.5f * cam.pixelHeight;
-            return new Vector3(temp.x, temp.y, wp.z);
+            temp.z = temp.z + (2 * cam.nearClipPlane);  // Depth from camera plane(exlcude nearClipPlane) to object
+            //temp.z = cam.farClipPlane - (cam.farClipPlane - temp.z);
+            //temp.z = (temp.z/temp.w + 1f) * .5f * cam.nearClipPlane;
+            return new Vector3(temp.x, temp.y, temp.z);
         }
      }
     void Update(){
@@ -176,12 +201,11 @@ public class ObjectMotion : MonoBehaviour
             //print("Spin Direction : " + spinDirection);
             MagnusEffect(force, rb, spinDirection, direction);
         }
-
     }
     // Update is called once per frame
     void FixedUpdate()
     {   
-        Time.timeScale = 5;
+        Time.timeScale = 3;
         // Main camera
         Vector3 ball_screen_coordinate_main = mainCamera.WorldToScreenPoint(rb.position);
         Vector3 ball_ndc_coordinate_main = mainCamera.WorldToViewportPoint(rb.position);
@@ -192,13 +216,20 @@ public class ObjectMotion : MonoBehaviour
         Vector3 ball_screen_coordinate_top = topPitchCamera.WorldToScreenPoint(rb.position);
         Vector3 ball_ndc_coordinate_top = topPitchCamera.WorldToViewportPoint(rb.position);
         if(debug){
-            print("Position : " + rb.position);
+            print("Position in world : " + rb.position);
             print("World to screen function(mainCamera) : " + manualWorldToScreenPoint(rb.position, mainCamera.projectionMatrix, mainCamera.worldToCameraMatrix, mainCamera));
             print("World to screen method(mainCamera) : " + mainCamera.WorldToScreenPoint(rb.position));
             print("World to screen function(alongPitchCamera) : " + manualWorldToScreenPoint(rb.position, alongPitchCamera.projectionMatrix, alongPitchCamera.worldToCameraMatrix, alongPitchCamera));
             print("World to screen method(alongPitchCamera) : " + alongPitchCamera.WorldToScreenPoint(rb.position));
             print("World to screen function(topPitchCamera) : " + manualWorldToScreenPoint(rb.position, topPitchCamera.projectionMatrix, topPitchCamera.worldToCameraMatrix, topPitchCamera));
             print("World to screen method(topPitchCamera) : " + topPitchCamera.WorldToScreenPoint(rb.position));
+            print("Position in screen : " + mainCamera.WorldToScreenPoint(rb.position));
+            Vector3 rbOnScreenPos_main_method = mainCamera.WorldToScreenPoint(rb.position);
+            Vector3 rbOnScreenPos_main_fn = manualWorldToScreenPoint(rb.position, mainCamera.projectionMatrix, mainCamera.worldToCameraMatrix, mainCamera);
+            print("Screen to world method (mainCamera) : " + mainCamera.ScreenToWorldPoint(new Vector3(rbOnScreenPos_main_method.x, rbOnScreenPos_main_method.y, rbOnScreenPos_main_method.z)));
+            print("Screen to world function (mainCamera) : " + ManualScreenPointToWorldPoint(new Vector2(rbOnScreenPos_main_method.x, rbOnScreenPos_main_method.y), rbOnScreenPos_main_method.z, mainCamera.cameraToWorldMatrix, mainCamera.projectionMatrix.inverse));
+            print("My attempt : " + manualScreenToWorldPoint(mainCamera, rbOnScreenPos_main_method));
+            print("==============================================================================================");
         }
 
         // Write the data every timestep
@@ -216,8 +247,8 @@ public class ObjectMotion : MonoBehaviour
             }
             magnusForceWeight = 0.15f;
             direction = FindDirection(rb.position);
-            addForceFlag = true;
             rb.AddForce(Vector3.Scale(force, direction), ForceMode.Impulse);
+            addForceFlag = true;
         }
         if (rb.position.y <=0){
             // Replay when ball is outside the field

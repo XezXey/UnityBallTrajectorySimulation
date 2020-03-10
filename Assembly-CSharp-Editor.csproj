@@ -296,6 +296,21 @@
  <Reference Include="Newtonsoft.Json">
  <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
  </Reference>
+ <Reference Include="GitHub.Api.45">
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Api.45.dll</HintPath>
+ </Reference>
+ <Reference Include="GitHub.Unity.45">
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Unity.45.dll</HintPath>
+ </Reference>
+ <Reference Include="sfw.net">
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/sfw.net.dll</HintPath>
+ </Reference>
+ <Reference Include="GitHub.UnityShim">
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.UnityShim.dll</HintPath>
+ </Reference>
+ <Reference Include="GitHub.Logging">
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Logging.dll</HintPath>
+ </Reference>
  <Reference Include="nunit.framework">
  <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>
@@ -664,6 +679,10 @@
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{2A211A8F-3813-B43A-B6BD-5C9C119CA28F}</Project>
       <Name>Assembly-CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-Editor-firstpass.csproj">
+      <Project>{B9FEC268-8F74-AD5E-E229-BFA7CEEC50A4}</Project>
+      <Name>Assembly-CSharp-Editor-firstpass</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
