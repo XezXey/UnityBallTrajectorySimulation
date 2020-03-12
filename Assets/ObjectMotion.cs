@@ -140,46 +140,33 @@ public class ObjectMotion : MonoBehaviour
         return string.Format("{0}/SimulatedTrajectory/Trial_{1}/{2}Trajectory.csv", Application.dataPath, trial, trajectoryType);
     }
 
-    Vector3 ManualScreenPointToWorldPoint(Vector2 screenPoint, float distance, Matrix4x4 cameraToWorldMatrix, Matrix4x4 projectionMatrixInverse) {
+    Vector3 ManualScreenPointToWorldPoint(Vector2 screenPoint, float distance, Camera cam) {
         // here we are converting screen point in screen space to camera space point placed on a plane "distance" away from the camera
         // screen point is in range [(0,0) - (Screen.Width, Screen.Height)]
         // Pipeline : 
         // object space -> {MODEL} -> World Space -> {VIEW} -> Eye Space -> {PROJ} -> Clip Space -> {perspective divide} -> NDC -> {Viewport/DepthRange} -> Window Space
+        // Move 3rd row to 2nd row and replace 3rd row with (0, 0, 0, 1)
+        Matrix4x4 projectionMatrix = cam.projectionMatrix;
+        projectionMatrix.SetRow(2, projectionMatrix.GetRow(3));
+        projectionMatrix.SetRow(3, new Vector4(.0f, .0f, .0f, 1.0f));
+        Matrix4x4 projectionMatrixInverse = projectionMatrix.inverse;
+        Matrix4x4 cameraToWorldMatrix = cam.cameraToWorldMatrix;
         Vector2 pointViewportSpace = screenPoint / new Vector2(Screen.width, Screen.height); // convert space [(0,0) - (Screen.Width, Screen.Height)] to [(0,0) - (1,1)]
         Vector2 pointCameraSpaceNormalized = (pointViewportSpace * 2.0f) - Vector2.one; // convert space [(0,0) - (1,1)] to [(-1,-1) - (1,1)]
         Vector2 pointCameraSpace = pointCameraSpaceNormalized * distance; // convert space [(-1,-1) - (1,1)] to [(-dist,-dist) - (dist, dist)]
-        Vector4 planePoint = new Vector4(pointCameraSpace.x, pointCameraSpace.y, distance, distance); // define the point (don't know why z and w components need to be set to distance)
+        Vector4 planePoint = new Vector4(pointCameraSpace.x, pointCameraSpace.y, distance, 1.0f); // define the point (don't know why z and w components need to be set to distance)
         // calculate convertion matrix from camera space to world space
         Matrix4x4 matrix = cameraToWorldMatrix * projectionMatrixInverse;
         // multiply world point by VP matrix
         Vector4 worldPoint = matrix * planePoint;
-        //worldPoint.y = 38.0f + worldPoint.y;
-        //worldPoint.z = worldPoint.z - 37.7f;
         return worldPoint;
     }
 
-    Vector4 manualScreenToWorldPoint(Camera cam, Vector3 sp){
-        Matrix4x4 mat = cam.cameraToWorldMatrix * cam.projectionMatrix.inverse;
-        //sp.x = ((sp.x * 2)/cam.pixelWidth - 1) * sp.z;
-        //sp.y = ((sp.y * 2)/cam.pixelHeight - 1) * sp.z;
-        Vector4 sp_homo = new Vector4(sp.x, sp.y, sp.z, sp.z);
-        sp_homo = mat * sp_homo;
-        //sp_homo.x = sp_homo.x / sp_homo.w;
-        //sp_homo.y = sp_homo.y / sp_homo.w;
-        //sp_homo.z = sp_homo.z / sp_homo.w;
-        return sp_homo;
-    }
-
-    Vector3 manualWorldToScreenPoint(Vector3 wp, Matrix4x4 projectionMatrix, Matrix4x4 worldToCameraMatrix, Camera cam) {
+    Vector3 manualWorldToScreenPoint(Vector3 wp, Camera cam) {
         // calculate view-projection matrix
-        //print("POINT : " + wp);
-        Matrix4x4 mat = projectionMatrix * worldToCameraMatrix;
-        //print("MAT : " + mat);
+        Matrix4x4 mat = cam.projectionMatrix * cam.worldToCameraMatrix;
         // multiply world point by VP matrix
         Vector4 temp = mat * new Vector4(wp.x, wp.y, wp.z, 1f);
-        //print("TEMP : " + temp);
-        //print("ProjectionMatrix : " + mainCamera.projectionMatrix);
-        //print("worldToCameraMatrix : " + mainCamera.worldToCameraMatrix);
 
         if (temp.w == 0f) {
             // point is exactly on camera focus point, screen point is undefined
@@ -190,9 +177,7 @@ public class ObjectMotion : MonoBehaviour
             temp.x = (temp.x/temp.w + 1f)*.5f * cam.pixelWidth;
             temp.y = (temp.y/temp.w + 1f)*.5f * cam.pixelHeight;
             temp.z = temp.z + (2 * cam.nearClipPlane);  // Depth from camera plane(exlcude nearClipPlane) to object
-            //temp.z = cam.farClipPlane - (cam.farClipPlane - temp.z);
-            //temp.z = (temp.z/temp.w + 1f) * .5f * cam.nearClipPlane;
-            return new Vector3(temp.x, temp.y, temp.z);
+            return new Vector3(temp.x, temp.y, temp.w);
         }
      }
     void Update(){
@@ -215,23 +200,26 @@ public class ObjectMotion : MonoBehaviour
         // Top pitch camera
         Vector3 ball_screen_coordinate_top = topPitchCamera.WorldToScreenPoint(rb.position);
         Vector3 ball_ndc_coordinate_top = topPitchCamera.WorldToViewportPoint(rb.position);
-        if(debug){
-            print("Position in world : " + rb.position);
-            print("World to screen function(mainCamera) : " + manualWorldToScreenPoint(rb.position, mainCamera.projectionMatrix, mainCamera.worldToCameraMatrix, mainCamera));
-            print("World to screen method(mainCamera) : " + mainCamera.WorldToScreenPoint(rb.position));
-            print("World to screen function(alongPitchCamera) : " + manualWorldToScreenPoint(rb.position, alongPitchCamera.projectionMatrix, alongPitchCamera.worldToCameraMatrix, alongPitchCamera));
-            print("World to screen method(alongPitchCamera) : " + alongPitchCamera.WorldToScreenPoint(rb.position));
-            print("World to screen function(topPitchCamera) : " + manualWorldToScreenPoint(rb.position, topPitchCamera.projectionMatrix, topPitchCamera.worldToCameraMatrix, topPitchCamera));
-            print("World to screen method(topPitchCamera) : " + topPitchCamera.WorldToScreenPoint(rb.position));
+        if(!debug){
             print("Position in screen : " + mainCamera.WorldToScreenPoint(rb.position));
-            Vector3 rbOnScreenPos_main_method = mainCamera.WorldToScreenPoint(rb.position);
-            Vector3 rbOnScreenPos_main_fn = manualWorldToScreenPoint(rb.position, mainCamera.projectionMatrix, mainCamera.worldToCameraMatrix, mainCamera);
-            print("Screen to world method (mainCamera) : " + mainCamera.ScreenToWorldPoint(new Vector3(rbOnScreenPos_main_method.x, rbOnScreenPos_main_method.y, rbOnScreenPos_main_method.z)));
-            print("Screen to world function (mainCamera) : " + ManualScreenPointToWorldPoint(new Vector2(rbOnScreenPos_main_method.x, rbOnScreenPos_main_method.y), rbOnScreenPos_main_method.z, mainCamera.cameraToWorldMatrix, mainCamera.projectionMatrix.inverse));
-            print("My attempt : " + manualScreenToWorldPoint(mainCamera, rbOnScreenPos_main_method));
+            print("World to screen function(mainCamera) : " + manualWorldToScreenPoint(rb.position, mainCamera));
+            print("World to screen method(mainCamera) : " + mainCamera.WorldToScreenPoint(rb.position));
+            print("World to screen function(alongPitchCamera) : " + manualWorldToScreenPoint(rb.position, alongPitchCamera));
+            print("World to screen method(alongPitchCamera) : " + alongPitchCamera.WorldToScreenPoint(rb.position));
+            print("World to screen function(topPitchCamera) : " + manualWorldToScreenPoint(rb.position, topPitchCamera));
+            print("World to screen method(topPitchCamera) : " + topPitchCamera.WorldToScreenPoint(rb.position));
+            Vector3 rbOnScreenPos_main_fn = manualWorldToScreenPoint(rb.position, mainCamera);
+            Vector3 rbOnScreenPos_along_fn = manualWorldToScreenPoint(rb.position, alongPitchCamera);
+            Vector3 rbOnScreenPos_top_fn = manualWorldToScreenPoint(rb.position, topPitchCamera);
+            print("Position in world : " + rb.position);
+            print("Screen to world function (mainCamera) : " + ManualScreenPointToWorldPoint(new Vector2(rbOnScreenPos_main_fn.x, rbOnScreenPos_main_fn.y), rbOnScreenPos_main_fn.z, mainCamera));
+            print("Screen to world method (mainCamera) : " + mainCamera.ScreenToWorldPoint(new Vector3(rbOnScreenPos_main_fn.x, rbOnScreenPos_main_fn.y, rbOnScreenPos_main_fn.z)));
+            print("Screen to world function (alongPitchCamera) : " + ManualScreenPointToWorldPoint(new Vector2(rbOnScreenPos_along_fn.x, rbOnScreenPos_along_fn.y), rbOnScreenPos_along_fn.z, alongPitchCamera));
+            print("Screen to world method (alongPitchCamera) : " + alongPitchCamera.ScreenToWorldPoint(new Vector3(rbOnScreenPos_along_fn.x, rbOnScreenPos_along_fn.y, rbOnScreenPos_along_fn.z)));
+            print("Screen to world function (topPitchCamera) : " + ManualScreenPointToWorldPoint(new Vector2(rbOnScreenPos_top_fn.x, rbOnScreenPos_top_fn.y), rbOnScreenPos_top_fn.z, topPitchCamera));
+            print("Screen to world method (topPitchCamera) : " + topPitchCamera.ScreenToWorldPoint(new Vector3(rbOnScreenPos_top_fn.x, rbOnScreenPos_top_fn.y, rbOnScreenPos_top_fn.z)));
             print("==============================================================================================");
         }
-
         // Write the data every timestep
         WriteTrajectoryToFile(ball_screen_coordinate_main, ball_ndc_coordinate_main, ball_screen_coordinate_along, ball_ndc_coordinate_along, 
                             ball_screen_coordinate_top, ball_ndc_coordinate_top, t);
