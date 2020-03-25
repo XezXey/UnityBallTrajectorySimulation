@@ -119,7 +119,7 @@ public class ObjectMotion : MonoBehaviour
     {
         using (var sw = new StreamWriter(getPath(), append:true))
         {
-        string traj=string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25}",
+        string traj=string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28}",
                 rb.position.x, rb.position.y, rb.position.z, rb.velocity.magnitude, ball_screen_coordinate_main.x, ball_screen_coordinate_main.y, 
                 ball_screen_coordinate_main.z, ball_ndc_coordinate_main.x, ball_ndc_coordinate_main.y, ball_ndc_coordinate_main.z,
                 ball_screen_coordinate_along.x, ball_screen_coordinate_along.y, ball_screen_coordinate_along.z, ball_ndc_coordinate_along.x, 
@@ -187,14 +187,13 @@ public class ObjectMotion : MonoBehaviour
     void Update(){
         if (trajectoryType == "MagnusProjectile"){
             bool spinDirection = (Random.value > 0.5f);
-            //print("Spin Direction : " + spinDirection);
             MagnusEffect(force, rb, spinDirection, direction);
         }
     }
     // Update is called once per frame
     void FixedUpdate()
     {   
-        Time.timeScale = 5f;
+        Time.timeScale = 20f;
         // Main camera
         Vector3 ball_screen_coordinate_main = mainCamera.WorldToScreenPoint(rb.position);
         Vector3 ball_ndc_coordinate_main = mainCamera.WorldToViewportPoint(rb.position);
@@ -235,7 +234,7 @@ public class ObjectMotion : MonoBehaviour
             else if (trajectoryType == "Rolling"){
                 force = Rolling(force);
             }
-            magnusForceWeight = 0.15f;
+            magnusForceWeight = 0.25f;
             direction = FindDirection(rb.position);
             force = Vector3.Scale(force, direction);
             rb.AddForce(force, ForceMode.Impulse);
@@ -276,7 +275,7 @@ public class ObjectMotion : MonoBehaviour
     Vector3 Projectile(Vector3 force){
         // Projectile a ball force
         force.x = Random.Range(1.0f, 10.0f);
-        force.y = Random.Range(5.0f, 20.0f);
+        force.y = Random.Range(5.0f, 17.0f);
         force.z = Random.Range(1.0f, 10.0f);
         return force;
     }
