@@ -579,11 +579,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc477c7ef72abf542a4674424dc90240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trajectoryType: MagnusProjectile
+  trajectoryType: Rolling
   addForceFlag: 1
   outsideFlag: 0
   bounceFlag: 0
-  trial: 5
+  trial: 12
   debug: 1
 --- !u!54 &1983285320
 Rigidbody:
