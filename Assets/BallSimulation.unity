@@ -583,7 +583,7 @@ MonoBehaviour:
   addForceFlag: 1
   outsideFlag: 0
   bounceFlag: 0
-  trial: 12
+  trial: 18
   debug: 1
 --- !u!54 &1983285320
 Rigidbody:

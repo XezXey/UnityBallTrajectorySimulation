@@ -193,7 +193,7 @@ public class ObjectMotion : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {   
-        Time.timeScale = 20f;
+        Time.timeScale = 25.0f;
         // Main camera
         Vector3 ball_screen_coordinate_main = mainCamera.WorldToScreenPoint(rb.position);
         Vector3 ball_ndc_coordinate_main = mainCamera.WorldToViewportPoint(rb.position);
@@ -274,9 +274,9 @@ public class ObjectMotion : MonoBehaviour
 
     Vector3 Projectile(Vector3 force){
         // Projectile a ball force
-        force.x = Random.Range(1.0f, 10.0f);
-        force.y = Random.Range(5.0f, 17.0f);
-        force.z = Random.Range(1.0f, 10.0f);
+        force.x = Random.Range(3.0f, 10.0f);
+        force.y = Random.Range(5.0f, 15.0f);
+        force.z = Random.Range(3.0f, 10.0f);
         return force;
     }
 
