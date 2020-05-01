@@ -2,8 +2,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <CscToolPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Tools/RoslynScripts</CscToolPath>
-    <CscToolExe>unity_csc.sh</CscToolExe>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{B9FEC268-8F74-AD5E-E229-BFA7CEEC50A4}</ProjectGuid>
+    <ProjectGuid>{1bf71876-05d3-471d-5910-5e70a4b9793d}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor-firstpass</AssemblyName>
@@ -47,56 +45,12 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="UnityEngine">
-      <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
      <Compile Include="Assets\Plugins\GitHub\Editor\ExtensionLoader.cs" />
      <Compile Include="Assets\Plugins\GitHub\Editor\UnityAPIWrapper.cs" />
      <None Include="Assets\Plugins\GitHub\Editor\credits.txt" />
      <None Include="Assets\Plugins\GitHub\Editor\eula.txt" />
- <Reference Include="UnityEditor.TestRunner">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.TestRunner">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Timeline.Editor">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.VSCode.Editor">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.UI">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Timeline">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
- </Reference>
- <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Postprocessing.Editor">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Rider.Editor">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Postprocessing.Runtime">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.UI">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ <Reference Include="UnityEngine">
+ <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -275,6 +229,9 @@
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEditor">
+ <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.VR">
  <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
  </Reference>
@@ -297,25 +254,25 @@
  <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="Newtonsoft.Json">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation_Branches/mixed_trajectory_scenario/UnityBallTrajectorySimulation/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
  </Reference>
  <Reference Include="GitHub.UnityShim">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.UnityShim.dll</HintPath>
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation_Branches/mixed_trajectory_scenario/UnityBallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.UnityShim.dll</HintPath>
  </Reference>
  <Reference Include="GitHub.Api.45">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Api.45.dll</HintPath>
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation_Branches/mixed_trajectory_scenario/UnityBallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Api.45.dll</HintPath>
  </Reference>
  <Reference Include="GitHub.Logging">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Logging.dll</HintPath>
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation_Branches/mixed_trajectory_scenario/UnityBallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Logging.dll</HintPath>
  </Reference>
  <Reference Include="GitHub.Unity.45">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Unity.45.dll</HintPath>
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation_Branches/mixed_trajectory_scenario/UnityBallTrajectorySimulation/Assets/Plugins/GitHub/Editor/GitHub.Unity.45.dll</HintPath>
  </Reference>
  <Reference Include="sfw.net">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Assets/Plugins/GitHub/Editor/sfw.net.dll</HintPath>
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation_Branches/mixed_trajectory_scenario/UnityBallTrajectorySimulation/Assets/Plugins/GitHub/Editor/sfw.net.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
- <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+ <HintPath>/home/puntawat/Mint/Work/Vision/BallTrajectory/Unity/BallTrajectorySimulation_Branches/mixed_trajectory_scenario/UnityBallTrajectorySimulation/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -678,8 +635,62 @@
  <HintPath>/home/puntawat/Unity/Hub/Editor/2019.3.2f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
  </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="UnityEditor.TestRunner.csproj">
+      <Project>{de05d77d-2ad5-4bbc-4d66-cfc90eca6bc9}</Project>
+      <Name>UnityEditor.TestRunner</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEngine.TestRunner.csproj">
+      <Project>{c643ab29-5804-197d-aae1-4d41e62c23f3}</Project>
+      <Name>UnityEngine.TestRunner</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Timeline.Editor.csproj">
+      <Project>{140470ff-60df-8a35-7949-5b8e76e66327}</Project>
+      <Name>Unity.Timeline.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.VSCode.Editor.csproj">
+      <Project>{6a826e59-f2ad-7688-05b0-b108b7f50678}</Project>
+      <Name>Unity.VSCode.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
+      <Project>{383517a5-3d6a-f75a-dd8e-8c7438d575a2}</Project>
+      <Name>Unity.TextMeshPro.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEngine.UI.csproj">
+      <Project>{4592ba5d-f04a-258e-5ddb-32d160881f4a}</Project>
+      <Name>UnityEngine.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Timeline.csproj">
+      <Project>{f367d266-fa80-ba3f-44a4-8080ebbe65fb}</Project>
+      <Name>Unity.Timeline</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.CollabProxy.Editor.csproj">
+      <Project>{59363b1e-91bd-574a-730c-63474ab36cdb}</Project>
+      <Name>Unity.CollabProxy.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Postprocessing.Editor.csproj">
+      <Project>{c1eca2f0-6e94-81d3-39e2-3303cca3b23e}</Project>
+      <Name>Unity.Postprocessing.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Rider.Editor.csproj">
+      <Project>{c8902b46-3209-69fc-af36-d88079490515}</Project>
+      <Name>Unity.Rider.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Postprocessing.Runtime.csproj">
+      <Project>{25865139-dfd4-12f8-6e6d-7524b644ca98}</Project>
+      <Name>Unity.Postprocessing.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.TextMeshPro.csproj">
+      <Project>{1883a5e4-4a0b-8a73-dc63-1f799050ea79}</Project>
+      <Name>Unity.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEditor.UI.csproj">
+      <Project>{fdf0b7c2-edb7-96f0-7ef4-19b8d7418a64}</Project>
+      <Name>UnityEditor.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
