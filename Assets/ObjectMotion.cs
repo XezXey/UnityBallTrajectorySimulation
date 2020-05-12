@@ -193,7 +193,7 @@ public class ObjectMotion : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {   
-        Time.timeScale = 25.0f;
+        Time.timeScale = 50.0f;
         // Main camera
         Vector3 ball_screen_coordinate_main = mainCamera.WorldToScreenPoint(rb.position);
         Vector3 ball_ndc_coordinate_main = mainCamera.WorldToViewportPoint(rb.position);
@@ -206,6 +206,7 @@ public class ObjectMotion : MonoBehaviour
         if(debug){
             print("Force : " + force);
             print("Direction : " + direction);
+            print("Position : " + rb.position);
             //print("Position in screen : " + mainCamera.WorldToScreenPoint(rb.position));
             //print("World to screen function(mainCamera) : " + manualWorldToScreenPoint(rb.position, mainCamera));
             //print("World to screen method(mainCamera) : " + mainCamera.WorldToScreenPoint(rb.position));
@@ -234,6 +235,16 @@ public class ObjectMotion : MonoBehaviour
             else if (trajectoryType == "Rolling"){
                 force = Rolling(force);
             }
+            else if (trajectoryType == "Mixed"){
+                float mixed_selection = Random.Range(0.0f, 1.0f);
+                if (mixed_selection >= 0.5){
+                    force = Projectile(force);
+                }
+                else{
+                    force = Rolling(force);
+                }
+            }
+            print("Force after random: " + force);
             magnusForceWeight = 0.25f;
             direction = FindDirection(rb.position);
             force = Vector3.Scale(force, direction);
@@ -267,14 +278,15 @@ public class ObjectMotion : MonoBehaviour
 
     Vector3 FindDirection(Vector3 ball_position){
         // Find direction that won't make ball goes out of the field.
-        Vector3 normalize_rb_position = new Vector3(ball_position.x/Mathf.Abs(ball_position.x), ball_position.y/Mathf.Abs(ball_position.y), ball_position.z/Mathf.Abs(ball_position.z));
+        print("Find direction (ball_position) : " + ball_position);
+        Vector3 normalize_rb_position = new Vector3((ball_position.x + Mathf.Epsilon)/Mathf.Abs(ball_position.x + Mathf.Epsilon), (ball_position.y + Mathf.Epsilon)/Mathf.Abs(ball_position.y + Mathf.Epsilon), (ball_position.z + Mathf.Epsilon)/Mathf.Abs(ball_position.z + Mathf.Epsilon));
         Vector3 direction = new Vector3(-normalize_rb_position.x, 1.0f, -normalize_rb_position.z);
         return direction;
     }
 
     Vector3 Projectile(Vector3 force){
         // Projectile a ball force
-        force.x = Random.Range(3.0f, 10.0f);
+        force.x = 0.0f; //Random.Range(3.0f, 10.0f);
         force.y = Random.Range(5.0f, 15.0f);
         force.z = Random.Range(3.0f, 10.0f);
         return force;
@@ -282,7 +294,7 @@ public class ObjectMotion : MonoBehaviour
 
     Vector3 Rolling(Vector3 force){
         // Rolling a ball force
-        force.x = Random.Range(.0f, 20.0f);
+        force.x = 0.0f; //Random.Range(.0f, 20.0f);
         force.y = 0.0f;
         force.z = Random.Range(.0f, 20.0f);
         return force;
